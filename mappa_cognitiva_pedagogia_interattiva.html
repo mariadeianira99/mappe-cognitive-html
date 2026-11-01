@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisi Pedagogica: Costruzione di una Mappa Cognitiva</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-btn.active {
+            border-bottom-color: #4f46e5;
+            color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header Principale -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div class="flex items-center space-x-3 mb-3 md:mb-0">
+                <div class="p-2 bg-indigo-700 rounded-lg shadow">
+                    <svg class="w-8 h-8 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Costruzione di una Mappa Cognitiva</h1>
+                    <p class="text-xs sm:text-sm text-indigo-200">Analisi pedagogica dell'esercizio e simulatore didattico interattivo</p>
+                </div>
+            </div>
+
+            <!-- Modalità e Badge Didattico -->
+            <div class="flex items-center space-x-2 text-xs font-semibold">
+                <span class="bg-indigo-800 border border-indigo-600 px-3 py-1.5 rounded-full text-indigo-100 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Esercitazione Strategie Didattiche
+                </span>
+            </div>
+        </div>
+
+        <!-- Pulsanti di Navigazione Principali (Tab Bar) -->
+        <nav class="bg-white border-b border-slate-200 px-2 sm:px-6 shadow-inner overflow-x-auto" aria-label="Tabs">
+            <div class="max-w-7xl mx-auto flex space-x-1 sm:space-x-2 py-2 min-w-max">
+                <button onclick="switchTab('desc-prerequisiti')" id="tab-desc-prerequisiti" class="tab-btn active inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Descrizione & Prerequisiti
+                </button>
+                <button onclick="switchTab('obiettivi')" id="tab-obiettivi" class="tab-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Obiettivi Didattici
+                </button>
+                <button onclick="switchTab('difficolta')" id="tab-difficolta" class="tab-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    Progressione di Difficoltà
+                </button>
+                <button onclick="switchTab('tipologie')" id="tab-tipologie" class="tab-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-slate-600 hover:text-indigo-600 hover:bg-slate-100 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Tipologie & Varianti
+                </button>
+                <button onclick="switchTab('simulatore')" id="tab-simulatore" class="tab-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2V4zM4 7a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2V7zM18 7a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2V7zM11 17a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2v-1z"></path></svg>
+                    Simulatore Mappa Interattiva
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenuto Principale Dinamico -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- SECTION 1: Descrizione & Prerequisiti -->
+        <section id="desc-prerequisiti" class="tab-content block space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 sm:p-8 bg-gradient-to-r from-indigo-50 to-blue-50 border-b border-slate-200">
+                    <div class="flex items-center space-x-3">
+                        <span class="p-2 bg-indigo-600 text-white rounded-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C20.832 18.477 19.247 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        </span>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">1. Descrizione delle Caratteristiche dell'Esercizio</h2>
+                            <p class="text-slate-600 text-sm">Natura e struttura dell'attività didattica</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 sm:p-8 space-y-4 text-slate-700 leading-relaxed">
+                    <p>
+                        La <strong>costruzione di una mappa cognitiva</strong> è un'attività complessa in cui l'alunno organizza e rappresenta visivamente le informazioni, i concetti o le idee chiave relativi a un determinato argomento, collegandoli tra loro attraverso relazioni logiche ben definite.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-2">
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center text-center">
+                            <div class="p-2 bg-indigo-100 text-indigo-700 rounded-full mb-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </div>
+                            <span class="font-semibold text-slate-800 text-sm">Nodi concettuali</span>
+                            <span class="text-xs text-slate-500 mt-1">Box contenenti parole chiave o frasi sintetiche</span>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center text-center">
+                            <div class="p-2 bg-blue-100 text-blue-700 rounded-full mb-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
+                            <span class="font-semibold text-slate-800 text-sm">Frecce & Connessioni</span>
+                            <span class="text-xs text-slate-500 mt-1">Direzione del flusso logico o causale</span>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center text-center">
+                            <div class="p-2 bg-teal-100 text-teal-700 rounded-full mb-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 12h10m-7 5h7"></path></svg>
+                            </div>
+                            <span class="font-semibold text-slate-800 text-sm">Etichette verbali</span>
+                            <span class="text-xs text-slate-500 mt-1">Verbi o connettivi ("causa", "include", "porta a")</span>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center text-center">
+                            <div class="p-2 bg-violet-100 text-violet-700 rounded-full mb-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                            </div>
+                            <span class="font-semibold text-slate-800 text-sm">Struttura Gerarchica</span>
+                            <span class="text-xs text-slate-500 mt-1">Dal generale al particolare (alto-basso o centro-periferia)</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 pt-2">
+                        L'alunno deve selezionare attivamente le informazioni rilevanti, sintetizzarle ed effettuare una strutturazione spaziale coerente per dimostrare la padronanza e la comprensione globale del tema trattato.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Prerequisiti -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-6 sm:p-8 bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-slate-200">
+                    <div class="flex items-center space-x-3">
+                        <span class="p-2 bg-emerald-600 text-white rounded-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </span>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">2. Prerequisiti Indispensabili dell'Alunno</h2>
+                            <p class="text-slate-600 text-sm">Abilità e competenze necessarie prima di eseguire l'esercizio</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 sm:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-start space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-sm">1</span>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">Comprensione del Testo</h3>
+                                <p class="text-sm text-slate-600 mt-1">Saper leggere e comprendere in modo approfondito un testo scritto o una fonte informativa.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-sm">2</span>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">Selezione delle Informazioni</h3>
+                                <p class="text-sm text-slate-600 mt-1">Saper individuare le informazioni principali ed essenziali, distinguendole dai dettagli accessori o superflui.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-sm">3</span>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">Conoscenza dello Schema Mappa</h3>
+                                <p class="text-sm text-slate-600 mt-1">Conoscere la struttura fondamentale di una mappa concettuale (concetti chiave, legami, frecce, gerarchia spaziale).</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-sm">4</span>
+                            <div>
+                                <h3 class="font-semibold text-slate-800">Capacità di Sintesi Verbal-Lessicale</h3>
+                                <p class="text-sm text-slate-600 mt-1">Saper sintetizzare un concetto complesso o un intero paragrafo in parole chiave o brevi locuzioni incisive.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Obiettivi (Principali e Secondari) -->
+        <section id="obiettivi" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Obiettivo Principale -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="p-6 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-indigo-500/40 rounded-lg">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold">3. Obiettivi Principali</h2>
+                                <p class="text-xs text-indigo-200">Traguardi cognitivi primari</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-grow space-y-4">
+                        <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+                            <h3 class="font-semibold text-indigo-900 mb-1 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                                Organizzazione Logica e Categorizzazione
+                            </h3>
+                            <p class="text-sm text-slate-700">Sviluppare le capacità di sintesi, categorizzazione e strutturazione organizzativa e gerarchica delle conoscenze.</p>
+                        </div>
+                        <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+                            <h3 class="font-semibold text-indigo-900 mb-1 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                                Apprendimento Significativo Visivo
+                            </h3>
+                            <p class="text-sm text-slate-700">Promuovere un apprendimento duraturo attraverso la visualizzazione attiva e consapevole delle relazioni intercorrenti tra i diversi concetti.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Obiettivi Secondari -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="p-6 bg-gradient-to-r from-sky-600 to-blue-700 text-white">
+                        <div class="flex items-center space-x-3">
+                            <div class="p-2 bg-sky-500/40 rounded-lg">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold">4. Obiettivi Secondari</h2>
+                                <p class="text-xs text-sky-200">Processi metacognitivi e procedurali</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-grow space-y-4">
+                        <div class="p-4 bg-sky-50 border border-sky-100 rounded-xl">
+                            <h3 class="font-semibold text-sky-900 mb-1 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-sky-600"></span>
+                                Pianificazione Strategica
+                            </h3>
+                            <p class="text-sm text-slate-700">Pianificazione e progettazione della soluzione dell'esercizio tramite opportune strategie (es. identificare prima il concetto chiave o nodo centrale da cui far ramificare gli altri).</p>
+                        </div>
+                        <div class="p-4 bg-sky-50 border border-sky-100 rounded-xl">
+                            <h3 class="font-semibold text-sky-900 mb-1 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-sky-600"></span>
+                                Autoregolazione & Metacognizione
+                            </h3>
+                            <p class="text-sm text-slate-700">Sviluppare la capacità di monitorare attivamente il proprio grado di comprensione del testo o dell'argomento trattato durante la strutturazione logica.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Progressione di Difficoltà -->
+        <section id="difficolta" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-slate-900">5. Modalità per Calibrare l'Esercizio</h2>
+                    <p class="text-slate-600 text-sm">Gradualità didattica: dal livello più semplice a quello più complesso</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Facile -->
+                    <div class="border border-emerald-200 bg-emerald-50/40 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-500/10 rounded-bl-full pointer-events-none"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full border border-emerald-300 uppercase tracking-wide">
+                                    Livello Facile
+                                </span>
+                                <span class="text-emerald-600 font-bold text-sm">Gradino 1</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-lg mb-2">Mappa Precompilata / Guidata</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Lo schema possiede già una <strong>struttura parzialmente definita</strong>. Vengono già forniti il nodo centrale principale e alcuni rami con concetti base inseriti.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-emerald-200/60">
+                            <span class="text-xs font-semibold text-emerald-900">Compito dello studente:</span>
+                            <p class="text-xs text-slate-600 mt-0.5">Completare solo gli spazi vuoti rimanenti o posizionare pochissimi elementi mancanti.</p>
+                        </div>
+                    </div>
+
+                    <!-- Intermedio -->
+                    <div class="border border-amber-200 bg-amber-50/40 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-amber-500/10 rounded-bl-full pointer-events-none"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full border border-amber-300 uppercase tracking-wide">
+                                    Livello Intermedio
+                                </span>
+                                <span class="text-amber-600 font-bold text-sm">Gradino 2</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-lg mb-2">Mappa a Scelte / Scheletro Vuoto</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Viene messa a disposizione una <strong>struttura di relazioni già tracciata</strong> (nodi vuoti collegati da frecce), affiancata da una lista/banca di parole chiave o immagini fornita dal docente.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-amber-200/60">
+                            <span class="text-xs font-semibold text-amber-900">Compito dello studente:</span>
+                            <p class="text-xs text-slate-600 mt-0.5">Selezionare e collocare correttamente le parole chiave nei nodi vuoti appropriati.</p>
+                        </div>
+                    </div>
+
+                    <!-- Difficile -->
+                    <div class="border border-rose-200 bg-rose-50/40 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-rose-500/10 rounded-bl-full pointer-events-none"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 bg-rose-100 text-rose-800 text-xs font-bold rounded-full border border-rose-300 uppercase tracking-wide">
+                                    Livello Difficile
+                                </span>
+                                <span class="text-rose-600 font-bold text-sm">Gradino 3</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-lg mb-2">Mappa "Da Zero" (Autonoma)</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                L'alunno parte da un <strong>testo esteso o fonte informativa completa</strong> senza alcun modello o supporto di mappa fornito.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-rose-200/60">
+                            <span class="text-xs font-semibold text-rose-900">Compito dello studente:</span>
+                            <p class="text-xs text-slate-600 mt-0.5">Estrarre in autonomia i concetti, stabilire la gerarchia, posizionare nodi e creare i legami logici con etichette.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Tipologie & Varianti -->
+        <section id="tipologie" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-slate-900">6. Diverse Tipologie del Medesimo Esercizio</h2>
+                    <p class="text-slate-600 text-sm">Varianti inclusive, operative e tecnologiche per adattare l'attività</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Tipologia Multimodale -->
+                    <div class="bg-gradient-to-b from-purple-50 to-white p-6 rounded-2xl border border-purple-100 shadow-sm">
+                        <div class="w-12 h-12 bg-purple-600 text-white rounded-xl flex items-center justify-center mb-4 shadow">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">Tipologia Multimodale</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Integrazione di supporti visivi ed uditivi: uso di immagini, iconografia specifica, simboli o brevi file audio accanto o al posto del solo testo scritto.
+                        </p>
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-md">
+                            Strategico per BES / DSA
+                        </span>
+                    </div>
+
+                    <!-- Tipologia Collaborativa -->
+                    <div class="bg-gradient-to-b from-blue-50 to-white p-6 rounded-2xl border border-blue-100 shadow-sm">
+                        <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center mb-4 shadow">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">Tipologia Collaborativa</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Svolgimento dell'esercizio a coppie o in piccoli gruppi di apprendimento cooperativo.
+                        </p>
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-md">
+                            Stimola discussione & negoziazione logica
+                        </span>
+                    </div>
+
+                    <!-- Digitali vs Analogici -->
+                    <div class="bg-gradient-to-b from-teal-50 to-white p-6 rounded-2xl border border-teal-100 shadow-sm">
+                        <div class="w-12 h-12 bg-teal-600 text-white rounded-xl flex items-center justify-center mb-4 shadow">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">Digitali vs Analogici</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Confronto tra modalità tradizionali (carta, pennarelli, post-it su cartelloni) e software/app digitali di mappatura concettuale.
+                        </p>
+                        <span class="inline-block px-3 py-1 bg-teal-100 text-teal-800 text-xs font-semibold rounded-md">
+                            Permette modifiche & spostamenti dinamici
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: Simulatore Interattivo -->
+        <section id="simulatore" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 sm:p-6 bg-slate-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                            Simulatore Interattivo di Mappa Cognitiva
+                        </h2>
+                        <p class="text-xs text-slate-400">Crea nodi, trascinali con il mouse o il touch e testa la risposta strutturale</p>
+                    </div>
+                    <!-- Controlli Canvas -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="addNodePrompt()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Aggiungi Nodo
+                        </button>
+                        <button onclick="clearCanvasMap()" class="px-3 py-1.5 bg-slate-800 hover:bg-rose-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium transition flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            Reset
+                        </button>
+                        <button onclick="loadTemplate('facile')" class="px-2.5 py-1.5 bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-700/50 rounded-lg text-xs font-medium transition">
+                            Esempio Facile
+                        </button>
+                        <button onclick="loadTemplate('intermedio')" class="px-2.5 py-1.5 bg-amber-900/60 hover:bg-amber-800 text-amber-300 border border-amber-700/50 rounded-lg text-xs font-medium transition">
+                            Esempio Intermedio
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="relative w-full h-[480px] bg-slate-950 overflow-hidden cursor-crosshair">
+                    <canvas id="mapCanvas" class="w-full h-full block"></canvas>
+                    <div class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur text-slate-400 text-xs px-3 py-1.5 rounded-lg border border-slate-800 pointer-events-none">
+                        💡 Suggerimento: Trascina i nodi per riorganizzarli nello spazio
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            Modulo Didattico Integrato per l'Analisi degli Esercizi Pedagogici • Costruzione di una Mappa Cognitiva
+        </div>
+    </footer>
+
+    <!-- JavaScript applicativo -->
+    <script>
+        // Gestione Tab / Sezioni
+        function switchTab(tabId) {
+            // Nascondi tutti i contenuti
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            });
+            // Rimuovi classe active dai bottoni
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Mostra contenuto attivo
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+                targetContent.classList.add('block');
+            }
+
+            // Attiva bottone corrente
+            const targetBtn = document.getElementById('tab-' + tabId);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+
+            // Se viene attivato il simulatore, ridimensiona e ridisegna il canvas
+            if (tabId === 'simulatore') {
+                setTimeout(resizeCanvas, 50);
+            }
+        }
+
+        // --- SISTEMA INTERATTIVO CANVAS MAPPA ---
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let nodes = [];
+        let links = [];
+        let draggedNode = null;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            drawMap();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Definizione Template Mappa
+        function loadTemplate(type) {
+            const w = canvas.width || 800;
+            const h = canvas.height || 480;
+
+            if (type === 'facile') {
+                nodes = [
+                    { id: 1, text: "MAPPA COGNITIVA", x: w / 2, y: 80, color: "#4f46e5", type: "root" },
+                    { id: 2, text: "Nodi & Concetti", x: w / 2 - 180, y: 220, color: "#059669", type: "branch" },
+                    { id: 3, text: "[... Inserisci Parole ...]", x: w / 2 + 180, y: 220, color: "#d97706", type: "fill" }
+                ];
+                links = [
+                    { from: 1, to: 2, label: "comprende" },
+                    { from: 1, to: 3, label: "richiede" }
+                ];
+            } else if (type === 'intermedio') {
+                nodes = [
+                    { id: 1, text: "Esercizio Didattico", x: w / 2, y: 70, color: "#4f46e5", type: "root" },
+                    { id: 2, text: "Prerequisiti", x: w / 2 - 220, y: 200, color: "#0284c7", type: "branch" },
+                    { id: 3, text: "Obiettivi Logici", x: w / 2, y: 200, color: "#059669", type: "branch" },
+                    { id: 4, text: "Varianti Didattiche", x: w / 2 + 220, y: 200, color: "#7c3aed", type: "branch" },
+                    { id: 5, text: "Lettura & Sintesi", x: w / 2 - 220, y: 340, color: "#64748b", type: "leaf" },
+                    { id: 6, text: "Autoregolazione", x: w / 2, y: 340, color: "#64748b", type: "leaf" }
+                ];
+                links = [
+                    { from: 1, to: 2, label: "richiede" },
+                    { from: 1, to: 3, label: "promuove" },
+                    { from: 1, to: 4, label: "include" },
+                    { from: 2, to: 5, label: "es." },
+                    { from: 3, to: 6, label: "es." }
+                ];
+            }
+            drawMap();
+        }
+
+        function drawMap() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Disegna Griglia di Sfondo Minimalista
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            const gridSize = 40;
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Disegna Frecce / Legami
+            links.forEach(link => {
+                const start = nodes.find(n => n.id === link.from);
+                const end = nodes.find(n => n.id === link.to);
+                if (start && end) {
+                    drawArrow(start.x, start.y, end.x, end.y, link.label);
+                }
+            });
+
+            // Disegna Nodi
+            nodes.forEach(node => {
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetY = 4;
+
+                // Box Rettangolare Arrotondato
+                const padding = 16;
+                ctx.font = '500 14px Inter, sans-serif';
+                const textWidth = ctx.measureText(node.text).width;
+                const rectWidth = Math.max(textWidth + padding * 2, 120);
+                const rectHeight = 44;
+                const rx = node.x - rectWidth / 2;
+                const ry = node.y - rectHeight / 2;
+
+                ctx.fillStyle = node.color || '#4f46e5';
+                ctx.beginPath();
+                ctx.roundRect(rx, ry, rectWidth, rectHeight, 10);
+                ctx.fill();
+
+                ctx.shadowColor = 'transparent';
+
+                // Bordo
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Testo del Nodo
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(node.text, node.x, node.y);
+            });
+        }
+
+        function drawArrow(fromx, fromy, tox, toy, label) {
+            const headlen = 10;
+            const dx = tox - fromx;
+            const dy = toy - fromy;
+            const angle = Math.atan2(dy, dx);
+
+            // Calcolo interruzione freccia sul bordo dei nodi
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 60) return;
+
+            const startX = fromx + 30 * Math.cos(angle);
+            const startY = fromy + 30 * Math.sin(angle);
+            const endX = tox - 40 * Math.cos(angle);
+            const endY = toy - 40 * Math.sin(angle);
+
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 2;
+
+            // Linea
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Punta di freccia
+            ctx.fillStyle = '#94a3b8';
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - headlen * Math.cos(angle - Math.PI / 6), endY - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(endX - headlen * Math.cos(angle + Math.PI / 6), endY - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.fill();
+
+            // Etichetta Verbale
+            if (label) {
+                const midX = (startX + endX) / 2;
+                const midY = (startY + endY) / 2;
+
+                ctx.font = '11px Inter, sans-serif';
+                const labelWidth = ctx.measureText(label).width + 10;
+
+                ctx.fillStyle = '#0f172a';
+                ctx.beginPath();
+                ctx.roundRect(midX - labelWidth / 2, midY - 10, labelWidth, 20, 4);
+                ctx.fill();
+
+                ctx.fillStyle = '#cbd5e1';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(label, midX, midY);
+            }
+        }
+
+        // Interazioni Mouse e Touch per Trascinamento
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function handlePointerDown(e) {
+            const coords = getCanvasCoords(e);
+            // Trova se è stato cliccato un nodo
+            for (let i = nodes.length - 1; i >= 0; i--) {
+                const node = nodes[i];
+                const dist = Math.hypot(node.x - coords.x, node.y - coords.y);
+                if (dist < 50) {
+                    draggedNode = node;
+                    dragOffsetX = coords.x - node.x;
+                    dragOffsetY = coords.y - node.y;
+                    break;
+                }
+            }
+        }
+
+        function handlePointerMove(e) {
+            if (draggedNode) {
+                const coords = getCanvasCoords(e);
+                draggedNode.x = coords.x - dragOffsetX;
+                draggedNode.y = coords.y - dragOffsetY;
+                drawMap();
+            }
+        }
+
+        function handlePointerUp() {
+            draggedNode = null;
+        }
+
+        canvas.addEventListener('mousedown', handlePointerDown);
+        canvas.addEventListener('mousemove', handlePointerMove);
+        window.addEventListener('mouseup', handlePointerUp);
+
+        canvas.addEventListener('touchstart', handlePointerDown, { passive: true });
+        canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
+        window.addEventListener('touchend', handlePointerUp);
+
+        function addNodePrompt() {
+            const text = prompt("Inserisci il testo per il nuovo nodo:", "Nuovo Concetto");
+            if (text) {
+                const newNode = {
+                    id: Date.now(),
+                    text: text,
+                    x: canvas.width / 2 + (Math.random() * 80 - 40),
+                    y: canvas.height / 2 + (Math.random() * 80 - 40),
+                    color: "#0284c7"
+                };
+                nodes.push(newNode);
+
+                // Collega automaticamente al primo nodo se esiste
+                if (nodes.length > 1) {
+                    links.push({
+                        from: nodes[0].id,
+                        to: newNode.id,
+                        label: "collegamento"
+                    });
+                }
+                drawMap();
+            }
+        }
+
+        function clearCanvasMap() {
+            nodes = [];
+            links = [];
+            drawMap();
+        }
+
+        // Inizializzazione automatica
+        window.onload = function() {
+            resizeCanvas();
+            loadTemplate('intermedio');
+        };
+    </script>
+</body>
+</html>
